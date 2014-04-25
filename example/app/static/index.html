@@ -1,0 +1,141 @@
+<html>
+<head>
+    
+    <title>Example Cicruit Breaker Monitors</title>
+    <script data-main="js/main" src="js/require.js"></script>
+
+    <style>
+            path {
+                stroke: steelblue;
+                stroke-width: 2;
+                fill: none;
+            }
+
+            .cb-container {
+                float: left;
+            }
+            
+            .controls {
+                clear: both;
+            }
+
+            * {
+                font-size: small;
+                font-family: sans-serif;
+            }
+
+            .request-rate {
+                font-size: larger;
+                font-weight: bold;
+            }
+
+            .circuitbreaker-name {
+                font-weight: bold;
+            }
+
+            .success {
+                color: green;
+            }
+
+            .timeout {
+                color: #FF9900;
+            }
+
+            .rejected {
+                color: blue;
+            }
+            
+            .errors {
+                color: red;
+            }
+
+            .error-rate {
+                font-size: larger;
+                padding-left: 2px;
+            }
+
+            .circuit-state {
+                font-weight: bold;
+            }
+
+            table .info {
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .info td:not(:last-of-type) {
+                border-right: 2px solid #BFBFBF;
+                padding-left: 4px;
+                padding-right: 4px;
+                min-width: 30px;
+            }
+
+            .times td {
+                min-width: 30px;
+                padding-left: 4px;
+                padding-right: 4px;
+            }
+            .times td.time {
+                font-weight: bold;
+            }
+
+    </style>
+
+<script id="tmplContainer" type="text/x-handlebars-template">
+    <div class="cb-container">
+        <table class="circuitbreaker">
+        <tr>
+            <td class="svg-container"></td>
+            <td class="info-container"></td>
+        </tr>
+        </table>
+    </div>
+</script>
+<script id="tmplInfo" type="text/x-handlebars-template">
+<span class="circuitbreaker-name">{{name}}</span>
+<table class="info" cellspacing="0">
+<tr>
+    <td class="success" title="Success">{{health.success}}</td>
+    <td class="timeout" title="Timeouts">{{health.timeouts}}</td>
+    <td class="error-rate" title="Error Rate">{{perc health.errorRate}}</td>
+</tr>
+<tr>
+    <td class="rejected" title="Short-Circuits">{{health.rejected}}</td>
+    <td class="errors" title="Other Errors">{{health.otherErrors}}</td>
+    <td></td>
+</tr>
+</table>
+<span class="request-rate" title="Request Rate">{{toFixed health.callRate}}/s</span>
+<span class="active" title="Active">{{health.active}}</span> /
+<span class="queued" title="Queued">{{health.queued}}</span><br/>
+<span>Circuit: </span><span class="circuit-state">{{health.state}}</span><br/>
+<table class="times" cellspacing="0">
+<tr>
+    <td class="header">Median</td>
+    <td class="time">{{toFixed times.median}}ms</td>
+    <td class="header">90th</td>
+    <td class="time">{{toFixed times.p900}}ms</td>
+</tr>
+<tr>
+    <td class="header">Mean</td>
+    <td class="time">{{toFixed times.amean}}ms</td>
+    <td class="header">99th</td>
+    <td class="time">{{toFixed times.p990}}ms</td>
+</tr>
+</table>
+</script>
+
+</head>
+<body>
+
+<div id="circuitbreakers"></div>
+<div class="controls">
+<label for="dataGranularity">Line granularity (# points)</label>
+120 <input type="range" name="granularity" min="1" max="12" value="1" /> 10
+<br />
+<label for="requestsPerPixel">Requests per pixel (circle radius)</label>
+1 <input type="range" name="requestsPerPixel" min="1" max="1000" step="10" value="1" /> 1000
+</div>
+
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Promise Circuit Breaker Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	
+	<link type="text/css" rel="stylesheet" href="styles/site.spacelab.css">
+	
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Promise Circuit Breaker</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="CBObserver.html">CBObserver</a>
+						</li>
+						
+						<li>
+							<a href="CBStats.html">CBStats</a>
+						</li>
+						
+						<li>
+							<a href="CircuitBreaker.html">CircuitBreaker</a>
+						</li>
+						
+						<li>
+							<a href="OpenCircuitError.html">OpenCircuitError</a>
+						</li>
+						
+						<li>
+							<a href="RequestCircuitBreaker.html">RequestCircuitBreaker</a>
+						</li>
+						
+						<li>
+							<a href="TimeoutError.html">TimeoutError</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="CBObserver.html#event:batch">batch</a>
+						</li>
+						
+						<li>
+							<a href="CircuitBreaker.html#event:callback">callback</a>
+						</li>
+						
+						<li>
+							<a href="CircuitBreaker.html#event:interval">interval</a>
+						</li>
+						
+						<li>
+							<a href="RequestCircuitBreaker.html#event:callback">callback</a>
+						</li>
+						
+						<li>
+							<a href="RequestCircuitBreaker.html#event:interval">interval</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="externals.list.html" class="dropdown-toggle" data-toggle="dropdown">Externals<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Promise.html">Promise</a>
+						</li>
+						
+						<li>
+							<a href="request.html">request</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+		<div class="span8">
+			
+				<div id="main">
+					
+
+
+	
+	<span class="page-title">Index</span>
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section>
+        <article><h1>Install</h1><p>You can install locally with <code>npm install promise-circuitbreaker</code>.</p>
+<h1>Introduction</h1><p>A circuit breaker implementation for node with three main features:</p>
+<ul>
+<li>It wraps &quot;node functions&quot; and uses <a href="https://www.npmjs.org/package/bluebird">bluebird</a>
+Promise library to &quot;promisify&quot; the response.</li>
+<li>It uses a rolling window to calculate the circuit's health.</li>
+<li>It can use different error thresholds for different error types.</li>
+</ul>
+<p>For more information about the Circuit Breaker pattern you can read 
+Martin Fowler's <a href="http://martinfowler.com/bliki/CircuitBreaker.html">CircuitBreaker</a>.</p>
+<p>The rolling window is based on Netflix's <a href="https://github.com/Netflix/Hystrix/">Hystrix</a>,
+as is the half-open state in which a test request will be made to close the circuit on success.</p>
+<p>The package provides two main classes, the CircuitBreaker, and the RequestCircuitBreaker
+which wraps the <a href="https://www.npmjs.org/package/request">request</a> module.</p>
+<h1>Quick Start</h1><pre><code class="lang-javascript">var mysql = require('mysql'),
+    CircuitBreaker = require('promise-circuitbreaker'),
+    TimeoutError = CircuitBreaker.TimeoutError,
+    OpenCircuitError = CircuitBreaker.OpenCircuitError;
+
+var pool = mysql.createPool({
+    host: 'localhost',
+    database: 'test'
+});
+
+var cb = new CircuitBreaker(pool.query, pool, {
+    timeout: 1000,
+    errorThreshold: 0.1
+});
+
+cb.exec('SELECT sleep(0.1)').spread(function(rows, fields) {
+    console.log(&quot;OK!&quot;, rows);
+}).catch(TimeoutError, function(error) {
+    console.log(&quot;Handle timeout here&quot;);
+}).catch(OpenCircuitError, function(error) {
+    console.log(&quot;Handle open circuit error here&quot;);
+}).catch(function(error) {
+    console.log(&quot;Handle any error here&quot;);
+}).finally(function() {
+    cb.stopEvents();
+    pool.end();
+});
+</code></pre>
+<h1>Request Circuit Breaker Quick Start</h1><pre><code class="lang-javascript">var CircuitBreaker = require('promise-circuitbreaker'),
+    RequestCircuitBreaker = CircuitBreaker.RequestCircuitBreaker,
+    TimeoutError = CircuitBreaker.TimeoutError,
+    OpenCircuitError = CircuitBreaker.OpenCircuitError;
+
+var isError = function(error, response, body) {
+    if (error) return error;
+    if (response.statusCode == 503) {
+        var unavailableError = new Error();
+        unavailableError.name = &quot;ServiceUnavailableError&quot;;
+        return unavailableError;
+    }
+    return null;
+};
+
+var cb = new RequestCircuitBreaker({
+    isErrorHandler: isError,
+    errorThreshold: 0.1, // allow 10% error rate
+    errorNamesThresholds: {
+        ServiceUnavailableError: 0 // but close circuit on first unavailable error
+    }
+});
+
+cb.exec({url: 'https://graph.facebook.com/19292868552', json: true})
+.spread(function(response, page) {
+    console.log(page);
+}).catch(TimeoutError, function(error) {
+    console.log(&quot;Timeout!&quot;, error);
+}).catch(OpenCircuitError, function(error) {
+    console.log(&quot;Circuit is open!&quot;);
+}).catch(function(error) {
+    console.log(&quot;Other error&quot;);
+}).finally(function() {
+    cb.stopEvents();
+});
+</code></pre>
+<h1>Health Window</h1><p>The circuit breaker monitors the health using a rolling window.  The
+total period of time is determined by the number of windows and the
+size of each window.  This is the same as the &quot;buckets&quot; in
+<a href="https://github.com/Netflix/Hystrix/wiki/How-it-Works#CircuitBreaker">Netflix's Circuit Breaker</a>
+The defaults are the same as in Netflix's implementation (10 intervals of 1 second each).</p>
+<h1>Concurrency</h1><p>The circuit breaker keeps a count of the current &quot;active&quot; calls.
+These are calls which have begun but whose callback has not yet been called
+<em>and</em> which have not yet timedout.
+Disabled by default, you can configure the circuit breaker to queue requests once
+the active counter reaches a certain level.
+This might help you protect your backend by limiting the simultaneous calls made
+to it.  There are, however, some things to keep in mind.</p>
+<p>First of all, the wrapped resource might have it's own control. This is the case if you are using a
+mysql pool of connections, for example. The <a href="https://github.com/mikeal/request">request</a> module uses
+pooling which defaults to node's global <a href="http://nodejs.org/api/http.html#http_agent_maxsockets">http.agent.maxSockets</a>.
+So if you are using the RequestCircuitBreaker, even if you do not restrict the concurrency
+at the circuit breaker's level, you might notice that there are never more than 5 active connections (per host)
+which is node's default.</p>
+<p>You might want to use the circuit breaker's concurrency throttling to alter this behaviour. Consider a RESTful API,
+you could set node's (or the request module) pooling to 100 but have different circuit breakers
+with different concurrency settings for different resources.</p>
+<p>However, please notice that the current implementation <em>does not care</em> how much time a call remains
+in the queue. The timeout control starts once the call is actually executed.  So, the end-user could end waiting
+a more than expected even if the call succeeds very quickly, because it might have spent some time
+in the queue.</p>
+<h1>Example App</h1><p>If you download the project you can run a more complete example.
+For more information please read its
+<a href="https://github.com/pablolb/promise-circuitbreaker/tree/master/example/app/">readme</a>.</p>
+<h1>Configuration</h1><p>There are several parameters which allow you to configure the circuit breaker's
+behaviour, allowing you to adjust it to your particular needs.
+Please look at the <a href="http://pablolb.github.io/promise-circuitbreaker/CircuitBreaker.html">docs</a>
+for more details.</p>
+<h2>Volume Threshold</h2><p>The minimum amount of total calls in the health window required to start
+calculating the circuit's health. The circuit remains <em>closed</em> until this level is reached.
+You can set it to zero to always calculate the circuit's health. With a positive errorThreshold,
+this means that if the first request is an error, the circuit will trip.</p>
+<h2>Timeout</h2><p>The maximum amount of time the circuit breaker waits for the callback before failing
+with a TimeoutError. You can set it to zero to disable this functionality. The circuit breaker
+will only trip on errors.</p>
+<h2>Error Threshold</h2><p>The ratio of errors in the current health window which trips (opens) the circuit.
+The value is expressed as a float between 0 and 1. Setting it two 0 trips the circuit
+on the first error. Setting it to one, forces the circuit to always remain closed.
+You can also set a lower error rate for particular errors.</p>
+<h1>Running the tests</h1><p>You can run the tests with <code>make test</code>.  The main test is written with
+<a href="https://github.com/acuminous/yadda">yadda</a> and run through mocha.</p>
+<h1>License</h1><p>The MIT License (MIT)</p>
+<p>Copyright (c) 2014 Pablo de León Belloc</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p></article>
+    </section>
+
+
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a>
+		on Fri Apr 25 2014 21:17:23 GMT+0100 (IST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<div class="span3">
+				<div id="toc"></div>
+			</div>
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<script src="scripts/sunlight.js"></script>
+	<script src="scripts/sunlight.javascript.js"></script>
+	<script src="scripts/sunlight-plugin.doclinks.js"></script>
+	<script src="scripts/sunlight-plugin.linenumbers.js"></script>
+	<script src="scripts/sunlight-plugin.menu.js"></script>
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.scrollTo.js"></script>
+	<script src="scripts/jquery.localScroll.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+
+	<script>  Sunlight.highlightAll({lineNumbers: true,  showMenu: true, enableDoclinks: true}); </script>
+
+	<script>
+		$( function () {
+			$( "#toc" ).toc( {
+			    anchorName  : function(i, heading, prefix) {
+					return $(heading).attr("id") || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : 60
+			} );
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+
+		} );
+	</script>
+
+	
+
+</body>
+</html>
