@@ -1,6 +1,6 @@
 {
   "name": "promise-circuitbreaker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A circuit breaker implementation",
   "main": "./lib/circuitbreaker.js",
   "directories": {
@@ -38,5 +38,13 @@
     "promise,circuit,breaker"
   ],
   "author": "Pablo de León Belloc",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pablolb/promise-circuitbreaker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pablolb/promise-circuitbreaker/issues"
+  },
+  "homepage": "https://github.com/pablolb/promise-circuitbreaker"
 }
