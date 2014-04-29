@@ -1,11 +1,19 @@
 define(['lodash', 'jquery', 'handlebars', 'd3'], function(_, $, Handlebars, d3) {
     
     Handlebars.registerHelper('perc', function(percentage, options) {
-      return (100 * percentage).toFixed(options.hash.decimals) + "%";
+      if (typeof percentage == "number") {
+        return (100 * percentage).toFixed(options.hash.decimals) + "%";
+      } else {
+        return "?";
+      }
     });
     
     Handlebars.registerHelper('toFixed', function(num, options) {
-      return num.toFixed(options.hash.decimals);
+      if (typeof num == "number") {
+        return num.toFixed(options.hash.decimals);
+      } else {
+        return "?";
+      }
     });
     
     

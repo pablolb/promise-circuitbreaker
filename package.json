@@ -1,6 +1,6 @@
 {
   "name": "promise-circuitbreaker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A circuit breaker implementation",
   "main": "./lib/circuitbreaker.js",
   "directories": {
