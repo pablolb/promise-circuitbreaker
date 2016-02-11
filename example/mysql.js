@@ -1,5 +1,5 @@
 var mysql = require('mysql'),
-    Promise = require('bluebird'),
+    Bluebird = require('bluebird'),
     CircuitBreaker = require('../lib/circuitbreaker'),
     TimeoutError = CircuitBreaker.TimeoutError,
     OpenCircuitError = CircuitBreaker.OpenCircuitError;
@@ -61,7 +61,7 @@ p = cb.exec('SELECT BadQuery')
 promises.push(p);
 
 
-Promise.settle(promises)
+Bluebird.settle(promises)
 .finally(function() {
     process.exit();
 });

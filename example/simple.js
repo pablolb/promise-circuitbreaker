@@ -1,5 +1,5 @@
 var CircuitBreaker = require('../lib/circuitbreaker'),
-    Promise = require('bluebird');
+    Bluebird = require('bluebird');
 
 var sleepFun = function(ms, err, cb) {
     setTimeout(function() {
@@ -38,6 +38,6 @@ p = cb.exec(10, new Error())
     console.log("This fails");
 });
 
-Promise.settle(promises).then(function() {
+Bluebird.settle(promises).then(function() {
     cb.stopEvents();
 });
