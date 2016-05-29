@@ -93,11 +93,11 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Promise.html">Promise</a>
+							<a href="external-Promise.html">Promise</a>
 						</li>
 						
 						<li>
-							<a href="request.html">request</a>
+							<a href="external-request.html">request</a>
 						</li>
 						
 
@@ -141,8 +141,10 @@
 
 
     <section>
-        <article><h1>Install</h1><p>You can install locally with <code>npm install promise-circuitbreaker</code>.</p>
-<h1>Introduction</h1><p>A circuit breaker implementation for node with three main features:</p>
+        <article><p>#Install
+You can install locally with <code>npm install promise-circuitbreaker</code>.</p>
+<p>#Introduction
+A circuit breaker implementation for node with three main features:</p>
 <ul>
 <li>It wraps &quot;node functions&quot; and uses <a href="https://www.npmjs.org/package/bluebird">bluebird</a>
 Promise library to &quot;promisify&quot; the response.</li>
@@ -155,7 +157,8 @@ Martin Fowler's <a href="http://martinfowler.com/bliki/CircuitBreaker.html">Circ
 as is the half-open state in which a test request will be made to close the circuit on success.</p>
 <p>The package provides two main classes, the CircuitBreaker, and the RequestCircuitBreaker
 which wraps the <a href="https://www.npmjs.org/package/request">request</a> module.</p>
-<h1>Quick Start</h1><pre><code class="lang-javascript">var mysql = require('mysql'),
+<p>#Quick Start</p>
+<pre class="prettyprint source lang-javascript"><code>var mysql = require('mysql'),
     CircuitBreaker = require('promise-circuitbreaker'),
     TimeoutError = CircuitBreaker.TimeoutError,
     OpenCircuitError = CircuitBreaker.OpenCircuitError;
@@ -181,9 +184,8 @@ cb.exec('SELECT sleep(0.1)').spread(function(rows, fields) {
 }).finally(function() {
     cb.stopEvents();
     pool.end();
-});
-</code></pre>
-<h1>Request Circuit Breaker Quick Start</h1><pre><code class="lang-javascript">var CircuitBreaker = require('promise-circuitbreaker'),
+});</code></pre><p>#Request Circuit Breaker Quick Start</p>
+<pre class="prettyprint source lang-javascript"><code>var CircuitBreaker = require('promise-circuitbreaker'),
     RequestCircuitBreaker = CircuitBreaker.RequestCircuitBreaker,
     TimeoutError = CircuitBreaker.TimeoutError,
     OpenCircuitError = CircuitBreaker.OpenCircuitError;
@@ -217,14 +219,14 @@ cb.exec({url: 'https://graph.facebook.com/19292868552', json: true})
     console.log(&quot;Other error&quot;);
 }).finally(function() {
     cb.stopEvents();
-});
-</code></pre>
-<h1>Health Window</h1><p>The circuit breaker monitors the health using a rolling window.  The
+});</code></pre><p>#Health Window
+The circuit breaker monitors the health using a rolling window.  The
 total period of time is determined by the number of windows and the
 size of each window.  This is the same as the &quot;buckets&quot; in
 <a href="https://github.com/Netflix/Hystrix/wiki/How-it-Works#CircuitBreaker">Netflix's Circuit Breaker</a>
 The defaults are the same as in Netflix's implementation (10 intervals of 1 second each).</p>
-<h1>Concurrency</h1><p>The circuit breaker keeps a count of the current &quot;active&quot; calls.
+<p>#Concurrency
+The circuit breaker keeps a count of the current &quot;active&quot; calls.
 These are calls which have begun but whose callback has not yet been called
 <em>and</em> which have not yet timedout.
 Disabled by default, you can configure the circuit breaker to queue requests once
@@ -244,27 +246,34 @@ with different concurrency settings for different resources.</p>
 in the queue. The timeout control starts once the call is actually executed.  So, the end-user could end waiting
 a more than expected even if the call succeeds very quickly, because it might have spent some time
 in the queue.</p>
-<h1>Example App</h1><p>If you download the project you can run a more complete example.
+<p>#Example App
+If you download the project you can run a more complete example.
 For more information please read its
 <a href="https://github.com/pablolb/promise-circuitbreaker/tree/master/example/app/">readme</a>.</p>
-<h1>Configuration</h1><p>There are several parameters which allow you to configure the circuit breaker's
+<p>#Configuration
+There are several parameters which allow you to configure the circuit breaker's
 behaviour, allowing you to adjust it to your particular needs.
 Please look at the <a href="http://pablolb.github.io/promise-circuitbreaker/CircuitBreaker.html">docs</a>
 for more details.</p>
-<h2>Volume Threshold</h2><p>The minimum amount of total calls in the health window required to start
+<p>##Volume Threshold
+The minimum amount of total calls in the health window required to start
 calculating the circuit's health. The circuit remains <em>closed</em> until this level is reached.
 You can set it to zero to always calculate the circuit's health. With a positive errorThreshold,
 this means that if the first request is an error, the circuit will trip.</p>
-<h2>Timeout</h2><p>The maximum amount of time the circuit breaker waits for the callback before failing
+<p>##Timeout
+The maximum amount of time the circuit breaker waits for the callback before failing
 with a TimeoutError. You can set it to zero to disable this functionality. The circuit breaker
 will only trip on errors.</p>
-<h2>Error Threshold</h2><p>The ratio of errors in the current health window which trips (opens) the circuit.
+<p>##Error Threshold
+The ratio of errors in the current health window which trips (opens) the circuit.
 The value is expressed as a float between 0 and 1. Setting it two 0 trips the circuit
 on the first error. Setting it to one, forces the circuit to always remain closed.
 You can also set a lower error rate for particular errors.</p>
-<h1>Running the tests</h1><p>You can run the tests with <code>make test</code>.  The main test is written with
+<p>#Running the tests
+You can run the tests with <code>make test</code>.  The main test is written with
 <a href="https://github.com/acuminous/yadda">yadda</a> and run through mocha.</p>
-<h1>License</h1><p>The MIT License (MIT)</p>
+<p>#License
+The MIT License (MIT)</p>
 <p>Copyright (c) 2014 Pablo de León Belloc</p>
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the &quot;Software&quot;), to deal
@@ -296,8 +305,8 @@ THE SOFTWARE.</p></article>
 					
 					
 		<span class="jsdoc-message">
-		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a>
-		on Fri Apr 25 2014 21:17:23 GMT+0100 (IST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a>
+		on Sun May 29 2016 19:05:52 GMT-0300 (ART) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

@@ -93,11 +93,11 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Promise.html">Promise</a>
+							<a href="external-Promise.html">Promise</a>
 						</li>
 						
 						<li>
-							<a href="request.html">request</a>
+							<a href="external-request.html">request</a>
 						</li>
 						
 
@@ -136,7 +136,7 @@ var defaults = {
      * @see {@link https://github.com/petkaantonov/bluebird/blob/master/API.md#core}
      */
     Promise: require('bluebird'),
-    
+
     name: "CircuitBreaker",
     isErrorHandler: isError,
     concurrency: 0,
@@ -204,7 +204,7 @@ function CircuitBreaker(fn, fnThis, options) {
         self = this,
         rollIntervalTimeoutObj,
         rollWindowTimeoutObj;
-    
+
     function makeInterval(now) {
         now = now || Date.now();
         return _.extend(new Counts(), {
@@ -212,7 +212,7 @@ function CircuitBreaker(fn, fnThis, options) {
             times: []
         });
     }
-    
+
     /**
      * Set the timeout in milliseconds. Set to 0 to disable.
      *
@@ -236,7 +236,7 @@ function CircuitBreaker(fn, fnThis, options) {
         opts.volumeThreshold = count;
         return self;
     };
-    
+
     /**
      * Set the error threshold which tirggers circuit.
      * Set to 0 open circuit on first error.
@@ -248,7 +248,7 @@ function CircuitBreaker(fn, fnThis, options) {
         opts.errorThreshold = level;
         return self;
     };
-    
+
     /**
      * Set the error threshold for a particular error type.
      * The error type is obtained from the name property of the error.
@@ -260,7 +260,7 @@ function CircuitBreaker(fn, fnThis, options) {
         opts.errorNamesThresholds[name] = level;
         return self;
     };
-    
+
     /**
      * Set the sleep period until a test request is allowed to be made.
      * The circuit will remain open during this period of time.
@@ -272,7 +272,7 @@ function CircuitBreaker(fn, fnThis, options) {
         opts.resetTime = ms;
         return self;
     };
-    
+
     /**
      * Set the concurrency level. Set to 0 to disable (default behaviour).
      *
@@ -285,7 +285,7 @@ function CircuitBreaker(fn, fnThis, options) {
         opts.concurrency = num;
         return self;
     };
-    
+
     /**
      * Set the reporting interval size.
      *
@@ -295,7 +295,7 @@ function CircuitBreaker(fn, fnThis, options) {
         opts.intervalSize = ms;
         return self;
     };
-    
+
     /**
      * Set the size in milliseconds of each individual window used in the rolling counts.
      *
@@ -317,7 +317,7 @@ function CircuitBreaker(fn, fnThis, options) {
         rollingCounts.setSize(count);
         return self;
     };
-    
+
     /**
      * Enables/disables emitting the 'interval' event for reporting.
      *
@@ -339,7 +339,7 @@ function CircuitBreaker(fn, fnThis, options) {
         opts.emitCallbackEvent = bool ? true : false;
         return self;
     };
-    
+
     /**
      * Set a custom function to check if the callback was called with an error or not.
      *
@@ -363,7 +363,7 @@ function CircuitBreaker(fn, fnThis, options) {
         opts.isErrorHandler = cb;
         return self;
     };
-    
+
     /**
      * Get the current reporting interval.
 
@@ -372,7 +372,7 @@ function CircuitBreaker(fn, fnThis, options) {
     this.getCurrentInteval = function() {
         return _.cloneDeep(interval);
     };
-    
+
     /**
      * Get the current circuit breaker health rolling counts
      *
@@ -391,7 +391,7 @@ function CircuitBreaker(fn, fnThis, options) {
     this.getActiveCount = function() {
         return active;
     };
-    
+
     /**
      * Get the amount of requests in queue when concurrency is enabled.
      *
@@ -400,7 +400,7 @@ function CircuitBreaker(fn, fnThis, options) {
     this.getQueuedCount = function() {
         return queue.length;
     };
-    
+
     /**
      * Get this instance's name
      *
@@ -422,7 +422,7 @@ function CircuitBreaker(fn, fnThis, options) {
         lastErrorMs = null;
         testing = false;
     }
-    
+
     /**
      * Get current error percentage.
      *
@@ -431,7 +431,7 @@ function CircuitBreaker(fn, fnThis, options) {
     this.getErrorPercentage = function() {
         return rollingCounts.getCurrentErrorLevel();
     };
-    
+
     /**
      * Get current circuit's [state]{@link CircuitBreaker.STATE}.
      *
@@ -460,7 +460,7 @@ function CircuitBreaker(fn, fnThis, options) {
         }
         return STATE.CLOSED;
     };
-    
+
     this.toString = function() {
         return "[object CircuitBreaker " + name + " (" + self.getState() + ")]";
     };
@@ -496,14 +496,14 @@ function CircuitBreaker(fn, fnThis, options) {
         interval = makeInterval(now);
         rollIntervalTimeoutObj = setTimeout(rollInterval, opts.intervalSize);
     }
-    
+
     function rollWindow(firstTime) {
         if (!firstTime) {
             rollingCounts.roll();
         }
         rollWindowTimeoutObj = setTimeout(rollWindow, opts.windowSize);
     }
-    
+
     /**
      * Start events. Events starts automatically upon the first request.
      * This forces start emitting events before any request is made.
@@ -512,12 +512,12 @@ function CircuitBreaker(fn, fnThis, options) {
         if (opts.intervalSize &amp;&amp; !rollIntervalTimeoutObj) {
             rollInterval(true);
         }
-        
+
         if (opts.windowSize &amp;&amp; !rollWindowTimeoutObj) {
             rollWindow(true);
         }
     };
-    
+
     /**
      * Stop events. Clears the pending timeouts.
      */
@@ -529,15 +529,21 @@ function CircuitBreaker(fn, fnThis, options) {
             clearTimeout(rollWindowTimeoutObj);
         }
     };
-    
+
+    /**
+     * Bluebird Promise module
+     * @member {module}
+     */
+    this.Promise = opts.Promise;
+
     /**
      * Main entry point. Call the protected function and return a promise.
-     * 
+     *
      * @returns {external:Promise}
      */
     this.exec = function() {
         var args = Array.prototype.slice.call(arguments);
-        
+
         self.startEvents();
 
         if (opts.concurrency &amp;&amp; active >= opts.concurrency) {
@@ -564,7 +570,7 @@ function CircuitBreaker(fn, fnThis, options) {
     }
 
     function runRequest(callArgs, resolver) {
-        
+
         resolver = resolver || opts.Promise.defer();
         var state = self.getState();
         var timedout = false;
@@ -581,9 +587,9 @@ function CircuitBreaker(fn, fnThis, options) {
         } else if (state == STATE.HALF_OPEN) {
             testing = true;
         }
-        
+
         active += 1;
-        
+
         var timeoutObject = null;
         if (opts.timeout > 0) {
             timeoutObject = setTimeout(function() {
@@ -598,11 +604,11 @@ function CircuitBreaker(fn, fnThis, options) {
 
         var cb = function() {
             var args = Array.prototype.slice.call(arguments);
-            
+
             if (timeoutObject) {
                 clearTimeout(timeoutObject);
             }
-                   
+
             if (timedout) {
                 return;
             }
@@ -611,7 +617,7 @@ function CircuitBreaker(fn, fnThis, options) {
             var now = Date.now();
 
             var err = opts.isErrorHandler.apply(null, args);
-            
+
             if (opts.emitCallbackEvent) {
                 /**
                  * Callback event. Emitted on calls which do not timeout.
@@ -630,14 +636,14 @@ function CircuitBreaker(fn, fnThis, options) {
                     result: args
                 });
             }
-            
+
             if (err) {
                 recordError(err);
                 resolver.reject(err);
                 runNextInQueue();
                 return;
             }
-            
+
             interval.success++;
             interval.times.push(now - start);
             rollingCounts.addSuccess();
@@ -645,14 +651,14 @@ function CircuitBreaker(fn, fnThis, options) {
             if (testing) {
                 reset();
             }
-            
+
             // remove error
             args.shift();
             // if only one argument, resolve promise without array
             resolver.resolve(args.length == 1 ? args[0] : args);
             runNextInQueue();
         };
-        
+
         callArgs.push(cb);
         // TODO fn THIS
         fn.apply(fnThis, callArgs);
@@ -741,7 +747,6 @@ module.exports.OpenCircuitError = OpenCircuitError;
 module.exports.TimeoutError = TimeoutError;
 module.exports.CBObserver = require('./observer');
 module.exports.CBStats = require('./stats');
-
 </pre>
         </article>
     </section>
@@ -757,8 +762,8 @@ module.exports.CBStats = require('./stats');
 					
 					
 		<span class="jsdoc-message">
-		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a>
-		on Fri Apr 25 2014 21:17:23 GMT+0100 (IST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a>
+		on Sun May 29 2016 19:05:52 GMT-0300 (ART) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>
