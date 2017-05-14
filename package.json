@@ -1,6 +1,6 @@
 {
   "name": "promise-circuitbreaker",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A circuit breaker implementation",
   "main": "./lib/circuitbreaker.js",
   "directories": {
@@ -21,7 +21,7 @@
     "sinon": "<=1.9.0",
     "socket.io": "~0.9.16",
     "yadda": "~0.10.7",
-    "mocha": "~1.18.2",
+    "mocha": "~3.4.1",
     "debug": "~0.8.0",
     "socket.io-client": "^0.9.16",
     "jshint": "~2.9.2",
