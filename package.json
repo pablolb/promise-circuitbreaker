@@ -1,6 +1,6 @@
 {
   "name": "promise-circuitbreaker",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A circuit breaker implementation",
   "main": "./lib/circuitbreaker.js",
   "directories": {
@@ -9,9 +9,9 @@
     "test": "test"
   },
   "dependencies": {
-    "bluebird": "~1.1.1",
-    "lodash": "~2.4.1",
-    "fast-stats": "~0.0.2",
+    "bluebird": "~3.5.0",
+    "lodash": "~4.17.4",
+    "fast-stats": "~0.0.3",
     "request": "~2.81.0"
   },
   "devDependencies": {
