@@ -93,11 +93,11 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Promise.html">Promise</a>
+							<a href="external-Promise.html">Promise</a>
 						</li>
 						
 						<li>
-							<a href="request.html">request</a>
+							<a href="external-request.html">request</a>
 						</li>
 						
 
@@ -274,7 +274,7 @@ All options get passed to the CircuitBreaker (except the request option).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-602">line 602</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-616">line 616</a>
     </li></ul></dd>
     
 
@@ -319,6 +319,79 @@ All options get passed to the CircuitBreaker (except the request option).</p>
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="Promise"><span class="type-signature"></span>Promise<span class="type-signature"> :module</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Bluebird Promise module</p>
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">module</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="CircuitBreaker.html#Promise">CircuitBreaker#Promise</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-422">line 422</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -326,7 +399,7 @@ All options get passed to the CircuitBreaker (except the request option).</p>
         <dl>
             
 <dt>
-    <h4 class="name" id="exec"><span class="type-signature"></span>exec<span class="signature">()</span><span class="type-signature"> &rarr; {external:Promise}</span></h4>
+    <h4 class="name" id="exec"><span class="type-signature"></span>exec<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="external-Promise.html">external:Promise</a>}</span></h4>
     
     
 </dt>
@@ -372,7 +445,7 @@ All options get passed to the CircuitBreaker (except the request option).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-415">line 415</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-429">line 429</a>
     </li></ul></dd>
     
 
@@ -404,7 +477,7 @@ All options get passed to the CircuitBreaker (except the request option).</p>
 	</dt>
 	<dd>
 		
-<span class="param-type">external:Promise</span>
+<span class="param-type"><a href="external-Promise.html">external:Promise</a></span>
 
 
 	</dd>
@@ -466,7 +539,7 @@ calls which have started but have not timedout nor called-back.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-268">line 268</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-276">line 276</a>
     </li></ul></dd>
     
 
@@ -559,7 +632,100 @@ calls which have started but have not timedout nor called-back.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-258">line 258</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-266">line 266</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getCurrentInterval"><span class="type-signature"></span>getCurrentInterval<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get the current reporting interval.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="CircuitBreaker.html#getCurrentInterval">CircuitBreaker#getCurrentInterval</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-249">line 249</a>
     </li></ul></dd>
     
 
@@ -613,10 +779,6 @@ calls which have started but have not timedout nor called-back.</p>
 <dd>
     
     
-    <div class="description">
-        <p>Get the current reporting interval.</p>
-    </div>
-    
 
     
     
@@ -640,6 +802,8 @@ calls which have started but have not timedout nor called-back.</p>
     
 
     
+        <dt class="important tag-deprecated">Deprecated:</dt><dd class="yes-def tag-deprecated"><ul class="dummy"><li>Yes</li></ul></dd>
+    
 
     
 
@@ -652,7 +816,7 @@ calls which have started but have not timedout nor called-back.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-249">line 249</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-257">line 257</a>
     </li></ul></dd>
     
 
@@ -745,7 +909,7 @@ calls which have started but have not timedout nor called-back.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-308">line 308</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-316">line 316</a>
     </li></ul></dd>
     
 
@@ -838,7 +1002,7 @@ calls which have started but have not timedout nor called-back.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-286">line 286</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-294">line 294</a>
     </li></ul></dd>
     
 
@@ -931,7 +1095,7 @@ calls which have started but have not timedout nor called-back.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-277">line 277</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-285">line 285</a>
     </li></ul></dd>
     
 
@@ -986,7 +1150,7 @@ calls which have started but have not timedout nor called-back.</p>
     
     
     <div class="description">
-        <p>Get current circuit's <a href="CircuitBreaker.html#STATE"><code>state</code></a>.</p>
+        <p>Get current circuit's <a href="CircuitBreaker.html#.STATE"><code>state</code></a>.</p>
     </div>
     
 
@@ -1024,7 +1188,7 @@ calls which have started but have not timedout nor called-back.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-317">line 317</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-325">line 325</a>
     </li></ul></dd>
     
 
@@ -2828,7 +2992,7 @@ This forces start emitting events before any request is made.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-388">line 388</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-396">line 396</a>
     </li></ul></dd>
     
 
@@ -2902,7 +3066,7 @@ This forces start emitting events before any request is made.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-401">line 401</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-409">line 409</a>
     </li></ul></dd>
     
 
@@ -3115,7 +3279,7 @@ This forces start emitting events before any request is made.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-493">line 493</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-507">line 507</a>
     </li></ul></dd>
     
 
@@ -3529,7 +3693,7 @@ This forces start emitting events before any request is made.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-353">line 353</a>
+        <a href="circuitbreaker.js.html">circuitbreaker.js</a>, <a href="circuitbreaker.js.html#sunlight-1-line-361">line 361</a>
     </li></ul></dd>
     
 
@@ -3570,8 +3734,8 @@ This forces start emitting events before any request is made.</p>
 					
 					
 		<span class="jsdoc-message">
-		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a>
-		on Fri Apr 25 2014 21:17:23 GMT+0100 (IST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a>
+		on Sun May 14 2017 17:25:27 GMT-0300 (-03) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>
