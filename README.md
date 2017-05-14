@@ -1,7 +1,7 @@
-#Install
+# Install
 You can install locally with `npm install promise-circuitbreaker`.
 
-#Introduction
+# Introduction
 A circuit breaker implementation for node with three main features:
 
 * It wraps "node functions" and uses [bluebird](https://www.npmjs.org/package/bluebird)
@@ -18,7 +18,7 @@ as is the half-open state in which a test request will be made to close the circ
 The package provides two main classes, the CircuitBreaker, and the RequestCircuitBreaker
 which wraps the [request](https://www.npmjs.org/package/request) module.
 
-#Quick Start
+# Quick Start
 
 ```javascript
 var mysql = require('mysql'),
@@ -50,7 +50,7 @@ cb.exec('SELECT sleep(0.1)').spread(function(rows, fields) {
 });
 
 ```
-#Request Circuit Breaker Quick Start
+# Request Circuit Breaker Quick Start
 ```javascript
 var CircuitBreaker = require('promise-circuitbreaker'),
     RequestCircuitBreaker = CircuitBreaker.RequestCircuitBreaker,
@@ -89,14 +89,14 @@ cb.exec({url: 'https://graph.facebook.com/19292868552', json: true})
 });
 ```
 
-#Health Window
+# Health Window
 The circuit breaker monitors the health using a rolling window.  The
 total period of time is determined by the number of windows and the
 size of each window.  This is the same as the "buckets" in
 [Netflix's Circuit Breaker](https://github.com/Netflix/Hystrix/wiki/How-it-Works#CircuitBreaker)
 The defaults are the same as in Netflix's implementation (10 intervals of 1 second each).
 
-#Concurrency
+# Concurrency
 The circuit breaker keeps a count of the current "active" calls.
 These are calls which have begun but whose callback has not yet been called
 *and* which have not yet timedout.
@@ -121,39 +121,39 @@ in the queue. The timeout control starts once the call is actually executed.  So
 a more than expected even if the call succeeds very quickly, because it might have spent some time
 in the queue.
 
-#Example App
+# Example App
 If you download the project you can run a more complete example.
 For more information please read its
 [readme](https://github.com/pablolb/promise-circuitbreaker/tree/master/example/app/).
 
-#Configuration
+# Configuration
 There are several parameters which allow you to configure the circuit breaker's
 behaviour, allowing you to adjust it to your particular needs.
 Please look at the [docs](http://pablolb.github.io/promise-circuitbreaker/CircuitBreaker.html)
 for more details.
 
-##Volume Threshold
+## Volume Threshold
 The minimum amount of total calls in the health window required to start
 calculating the circuit's health. The circuit remains *closed* until this level is reached.
 You can set it to zero to always calculate the circuit's health. With a positive errorThreshold,
 this means that if the first request is an error, the circuit will trip.
 
-##Timeout
+## Timeout
 The maximum amount of time the circuit breaker waits for the callback before failing
 with a TimeoutError. You can set it to zero to disable this functionality. The circuit breaker
 will only trip on errors.
 
-##Error Threshold
+## Error Threshold
 The ratio of errors in the current health window which trips (opens) the circuit.
 The value is expressed as a float between 0 and 1. Setting it two 0 trips the circuit
 on the first error. Setting it to one, forces the circuit to always remain closed.
 You can also set a lower error rate for particular errors.
 
-#Running the tests
+# Running the tests
 You can run the tests with `make test`.  The main test is written with
 [yadda](https://github.com/acuminous/yadda) and run through mocha.
 
-#License
+# License
 The MIT License (MIT)
 
 Copyright (c) 2014 Pablo de León Belloc
