@@ -4,7 +4,7 @@ REPORTER=dot
 test: jshint
 
 test:
-	@NODE_ENV=test ./node_modules/.bin/mocha -u bdd -R $(REPORTER) test/*.js
+	@NODE_ENV=test ./node_modules/.bin/mocha -u bdd -R $(REPORTER) test/*.js $(GREP)
 
 jshint:
 	@./node_modules/.bin/jshint **/*.js *.json

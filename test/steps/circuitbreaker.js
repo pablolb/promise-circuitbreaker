@@ -12,6 +12,8 @@ function MockError() {
 util.inherits(MockError, Error);
 global.MockError = MockError; // make it accessible as global['MockError']
 
+process.on("unhandledRejection", function(reason, promise) {});
+
 var timeoutStub = function(ms, error, returnValue) {
     return function() {
         var args = Array.prototype.slice.call(arguments);
@@ -38,7 +40,7 @@ var errStub = function(error) {
 };
 
 module.exports = (function() {
-    
+
     var library = English.library();
 
     var sut,
@@ -123,7 +125,7 @@ module.exports = (function() {
     })
     .given("setting a custom isError handler", function(next) {
         sut.setIsErrorHandler(function() {
-            return new MockError(); 
+            return new MockError();
         });
         next();
     })
@@ -262,7 +264,7 @@ module.exports = (function() {
     .then("the promise fails with $ERROR", function(error, next) {
         promise.then(function() {
             next(new Error("Should failed!"));
-        }).catch(global[error], function(error) {
+        }).catch(global[error], function(err) {
             next();
         });
     })

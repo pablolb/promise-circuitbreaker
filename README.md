@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/pablolb/promise-circuitbreaker.svg?branch=master)](https://travis-ci.org/pablolb/promise-circuitbreaker)
 # Install
 You can install locally with `npm install promise-circuitbreaker`.
 
@@ -152,6 +153,19 @@ You can also set a lower error rate for particular errors.
 # Running the tests
 You can run the tests with `make test`.  The main test is written with
 [yadda](https://github.com/acuminous/yadda) and run through mocha.
+
+You can use the `spec` reporter to see the test details:
+
+```
+make test REPORTER=spec GREP='--grep "New circuit should be closed"'
+
+
+  Circuit Breaker
+    ✓ New circuit should be closed
+
+
+  1 passing (22ms)
+```
 
 # License
 The MIT License (MIT)
