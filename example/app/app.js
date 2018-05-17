@@ -28,6 +28,8 @@ module.exports = function(port) {
           var promiseLib = require('bluebird');
           if (config.nativePromise && (typeof Promise === "function")) {
             console.log("App using native promise");
+            process.on('unhandledRejection', function() {});
+            process.on('rejectionHandled', function() {});
             promiseLib = Promise;
           }
             var cb = new RequestCircuitBreaker({
@@ -39,7 +41,8 @@ module.exports = function(port) {
                 concurrency: service.concurrency,
                 windowSize: 10000,
                 intervalSize: 1000,
-                isErrorHandler: isErrorHandler
+                isErrorHandler: isErrorHandler,
+                Promise: promiseLib
             });
             cb.service = service;
             cbs.push(cb);

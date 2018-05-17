@@ -1,6 +1,6 @@
 {
   "name": "promise-circuitbreaker",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "A circuit breaker implementation",
   "main": "./lib/circuitbreaker.js",
   "directories": {
@@ -9,27 +9,29 @@
     "test": "test"
   },
   "dependencies": {
-    "bluebird": "~3.5.0",
-    "lodash": "~4.17.4",
+    "bluebird": "~3.5.1",
+    "lodash": "~4.17.10",
     "fast-stats": "~0.0.3",
-    "request": "~2.81.0"
+    "request": "~2.86.0"
   },
   "devDependencies": {
     "chai": "~1.9.1",
-    "express": "~3.5.1",
-    "node-inspector": "~0.7.2",
+    "express": "~4.16.3",
     "sinon": "<=1.9.0",
-    "socket.io": "~0.9.16",
+    "socket.io": "~2.1.0",
     "yadda": "~0.10.7",
-    "mocha": "~3.4.1",
-    "debug": "~0.8.0",
-    "socket.io-client": "^0.9.16",
+    "mocha": "~5.1.1",
+    "debug": "~3.1.0",
+    "socket.io-client": "^2.1.0",
     "jshint": "~2.9.2",
     "jsdoc": "~3.3.0-alpha5",
     "ink-docstrap": "git+https://github.com/terryweiss/docstrap.git#2c1e385f8455c4eeb51df96c0065f430c5b64e2b",
     "minimist": "0.0.8",
-    "mysql": "~2.1.1",
+    "mysql": "~2.15.0",
     "markdown": "~0.5.0"
+  },
+  "engines": {
+    "node": ">=4"
   },
   "scripts": {
     "test": "make test"

@@ -39,7 +39,7 @@ var errStub = function(error) {
     };
 };
 
-module.exports = (function(options) {
+module.exports = function(options) {
 
     var library = English.library();
 
@@ -331,4 +331,4 @@ module.exports = (function(options) {
         call.should.eql(expectedCallbackArg, "Callback event argument");
         next();
     });
-})();
+};
