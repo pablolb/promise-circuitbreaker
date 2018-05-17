@@ -1,5 +1,5 @@
 var express = require('express'),
-    Promise = require('bluebird'),
+    Bluebird = require('bluebird'),
     request = require('request'),
     getRandomInt = require('./random_int'),
     RequestCircuitBreaker = require('../../lib/circuitbreaker').RequestCircuitBreaker,
@@ -25,6 +25,11 @@ module.exports = function(port) {
     this.configure = function(config) {
         statsPort = config.statsPort;
         config.services.forEach(function(service) {
+          var promiseLib = require('bluebird');
+          if (config.nativePromise && (typeof Promise === "function")) {
+            console.log("App using native promise");
+            promiseLib = Promise;
+          }
             var cb = new RequestCircuitBreaker({
                 name: "CB:" + service.port + ":" + port,
                 errorThreshold: service.errorThreshold,
@@ -40,7 +45,7 @@ module.exports = function(port) {
             cbs.push(cb);
         });
     };
-       
+
     app.get("/", function(req, res) {
         var promises = [];
         cbs.forEach(function(cb) {
@@ -50,9 +55,9 @@ module.exports = function(port) {
                 promises.push(cb.exec(url));
             }
         });
-        Promise.map(promises, function(res) { return res[1]; }).then(function(results) {
+        res.set('Content-Type', 'text/plain');
+        Bluebird.map(promises, function(res) { return res[1]; }).then(function(results) {
             res.send(results.join("\n"));
-            res.set('Content-Type', 'text/plain');
             reqs++;
         }).catch(function(error) {
             reqs++;
@@ -64,12 +69,12 @@ module.exports = function(port) {
         process.title = 'node (app:' + port + ')';
         app.listen(port, function() {
             var start = Date.now();
-    
+
             var observer = new CBObserver();
             cbs.forEach(function(cb) {
                 observer.watch(cb);
             });
-            
+
             var ioClient = require('socket.io-client');
             setTimeout(function() {
                 var socket = ioClient.connect('http://localhost:' + statsPort);

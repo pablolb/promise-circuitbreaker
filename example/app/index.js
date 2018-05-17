@@ -42,6 +42,7 @@ function help() {
                                             opts.STATS_WEBUI_PORT);
     console.log("--globalagent-maxsockets   http.globalAgent.maxSockets value (default: %d)",
                                             opts.GLOBALAGENT_MAXSOCKETS);
+    console.log("--native-promise           Use node native Promise if available")
 }
 
 var argv = minimist(process.argv.slice(2));
@@ -116,7 +117,7 @@ if (cluster.isMaster) {
         serviceWorkers = [],
         appWorkers = [],
         userWorkers = [];
-    
+
     console.log("The web UI will be on http://localhost:%d/", opts.STATS_WEBUI_PORT);
     console.log("You have 5 seconds to abort...");
     function countdown(n) {
@@ -133,7 +134,7 @@ if (cluster.isMaster) {
     countdown(5);
 
     function start() {
-    
+
     statsWorker = cluster.fork({statsServer: true});
 
     services.forEach(function(service) {
@@ -157,7 +158,7 @@ if (cluster.isMaster) {
     appWorkers.forEach(function(worker) {
         worker.send({
             msg: 'start',
-            config: {services: services, statsPort: statsServer.ioPort}
+            config: {services: services, statsPort: statsServer.ioPort, nativePromise: argv['native-promise']}
         });
     });
 
@@ -201,4 +202,3 @@ if (cluster.isMaster) {
         });
     }
 }
-

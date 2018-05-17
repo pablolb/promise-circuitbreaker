@@ -1,6 +1,6 @@
 var Yadda = require('yadda'),
     path = require('path');
-    
+
 Yadda.plugins.mocha.AsyncScenarioLevelPlugin.init();
 
 new Yadda.FeatureFileSearch(path.join(__dirname, 'features')).each(function(file) {
@@ -12,5 +12,14 @@ new Yadda.FeatureFileSearch(path.join(__dirname, 'features')).each(function(file
         scenarios(feature.scenarios, function(scenario, done) {
             yadda.yadda(scenario.steps, done);
         });
+
+        if (typeof Promise === "function") {
+          library = require('./steps/circuitbreaker', {Promise: Promise});
+          yadda = new Yadda.Yadda(library);
+
+          scenarios(feature.scenarios, function(scenario, done) {
+              yadda.yadda(scenario.steps, done);
+          });
+        }
     });
 });

@@ -39,7 +39,7 @@ var errStub = function(error) {
     };
 };
 
-module.exports = (function() {
+module.exports = (function(options) {
 
     var library = English.library();
 
@@ -52,6 +52,10 @@ module.exports = (function() {
         callbackEventSpy,
         expectedCallbackArg,
         promise;
+
+    function buildErrorCatcher(expected, error) {
+      error.name.should.equal(expected);
+    }
 
     beforeEach(function(done) {
         stubs = [];
@@ -74,9 +78,10 @@ module.exports = (function() {
         done();
     });
 
+
     return library
     .given("a circuit breaker", function(next) {
-        sut = new CircuitBreaker(fn);
+        sut = new CircuitBreaker(fn, options || {});
         next();
     })
     .given("setting the timeout to $MS ms", function(ms, next) {
@@ -148,13 +153,17 @@ module.exports = (function() {
     })
     .when("one call that fails is made", function(next) {
         stubs.push(errStub());
-        promise = sut.exec().catch(MockError, function(error) {});
+        promise = sut.exec().catch(function(error) {
+          buildErrorCatcher("MockError", error);
+        });
         next();
     })
     .when("$NUM calls that fail are made", function(num, next) {
         for (var i = 0; i < num; i++) {
             stubs.push(errStub());
-            sut.exec().catch(MockError, function(error) {});
+            sut.exec().catch(function(error) {
+              buildErrorCatcher("MockError", error);
+            });
         }
         next();
     })
@@ -168,7 +177,9 @@ module.exports = (function() {
     .when("$NUM calls that timeout are made", function(num, next) {
         for (var i = 0; i < num; i++) {
             stubs.push(timeoutStub(1));
-            sut.exec().catch(TimeoutError, function(error) {});
+            sut.exec().catch(function(error) {
+              buildErrorCatcher("TimeoutError", error);
+            });
             clock.tick(1);
         }
         next();
@@ -261,11 +272,12 @@ module.exports = (function() {
             next(error);
         });
     })
-    .then("the promise fails with $ERROR", function(error, next) {
+    .then("the promise fails with $ERROR", function(expectedError, next) {
         promise.then(function() {
             next(new Error("Should failed!"));
-        }).catch(global[error], function(err) {
-            next();
+        }).catch(function(error) {
+          error.name.should.equal(expectedError);
+          next();
         });
     })
     .then("the circuit should be $STATE", function(state, next) {

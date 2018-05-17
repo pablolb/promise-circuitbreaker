@@ -1,16 +1,16 @@
 [![Build Status](https://travis-ci.org/pablolb/promise-circuitbreaker.svg?branch=master)](https://travis-ci.org/pablolb/promise-circuitbreaker)
 # Install
-You can install locally with `npm install promise-circuitbreaker`.
+You can install locally with `npm install promise-circuitbreaker`.  
 
 # Introduction
 A circuit breaker implementation for node with three main features:
 
 * It wraps "node functions" and uses [bluebird](https://www.npmjs.org/package/bluebird)
-Promise library to "promisify" the response.
+Promise library to "promisify" the response as default (you can choose to use the native implementation).
 * It uses a rolling window to calculate the circuit's health.
 * It can use different error thresholds for different error types.
 
-For more information about the Circuit Breaker pattern you can read 
+For more information about the Circuit Breaker pattern you can read
 Martin Fowler's [CircuitBreaker](http://martinfowler.com/bliki/CircuitBreaker.html).
 
 The rolling window is based on Netflix's [Hystrix](https://github.com/Netflix/Hystrix/),
@@ -37,6 +37,7 @@ var cb = new CircuitBreaker(pool.query, pool, {
     errorThreshold: 0.1
 });
 
+// Using bluebird catch syntax
 cb.exec('SELECT sleep(0.1)').spread(function(rows, fields) {
     console.log("OK!", rows);
 }).catch(TimeoutError, function(error) {
