@@ -12,7 +12,7 @@
     "bluebird": "~3.5.1",
     "lodash": "~4.17.10",
     "fast-stats": "~0.0.3",
-    "request": "~2.86.0"
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "chai": "~1.9.1",
